@@ -1,3 +1,5 @@
+import random
+
 import pygame
 from snakeClass import snake
 from fieldClass import playing_Field
@@ -18,10 +20,20 @@ snakeHead = snake((horizontal_Cells, vertical_Cells),cell_size,screen)
 play_area = playing_Field((horizontal_Cells,vertical_Cells),cell_size, screen)
 time_since_move = 0
 gameSpeed = 500
-
+isApple = False
 
 
 while running:
+
+    while not isApple:
+        appleX = random.randrange(1,horizontal_Cells-2)
+        appleY = random.randrange(1,vertical_Cells-2)
+        if play_area.cells[appleY][appleX].hasWall == 0:
+            play_area.cells[appleY][appleX].add_apple()
+            isApple = True
+            if gameSpeed > 100:
+                gameSpeed -= 10
+            
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -51,7 +63,8 @@ while running:
     
     if time_since_move >= gameSpeed:
         time_since_move = 0
-        snakeHead.update_position()
+        if snakeHead.direction != (0,0):
+            running,isApple = snakeHead.update_position(play_area)
         snakeHead.x += snakeHead.direction[0] * cell_size
         snakeHead.y += snakeHead.direction[1] * cell_size
         

@@ -40,6 +40,7 @@ class playing_Field():
 class cell():
     def __init__(self,x,y, cell_size, surface):
         self.hasWall = 0
+        self.hasApple = 0
         self.x = x
         self.y = y
         self.cellSize = cell_size
@@ -48,12 +49,19 @@ class cell():
     def add_wall(self):
         self.hasWall = 1
 
+    def add_apple(self):
+        self.hasApple = 1
+
+    def remove_apple(self):
+        self.hasApple = 0
         
     def draw_cell(self):
         cellSquare = pygame.Rect(self.x, self.y, self.cellSize-1, self.cellSize-1)
         
         if self.hasWall == 1:
             colour = (200,20,60)
+        elif self.hasApple == 1:
+            colour = (255,0,0)
         else:
             colour = (25,80,25)
 
