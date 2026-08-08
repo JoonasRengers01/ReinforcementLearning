@@ -8,7 +8,7 @@ class snake():
         self.yoffset = (surface.get_height() - size[1]*cellSize)/2
         self.x = int(size[0]/2)
         self.y = int(size[1]/2)
-        self.direction = (0,0)
+        self.direction = (0,-1)
         self.lastmove = (0,0)
         self.cellSize = cellSize
         self.surface = surface
@@ -54,16 +54,54 @@ class snake():
             return True
         return False
 
-    def snake_collision_check(self,headx,heady):
+    def snake_collision_check(self,evalx,evaly):
         for i in range(1,self.Length):
-            if headx == self.segments[i].x and heady == self.segments[i].y:
+            if evalx == self.segments[i].x and evaly == self.segments[i].y:
                 return True
         return False
+
+    def forward_check(self, field):
+        collision = False
+        headx = self.segments[0].x
+        heady = self.segments[0].y
+        distance = 1
+        while collision == False:
+            if self.wall_check(headx + distance * self.direction[0], heady + distance * self.direction[1], field) or self.snake_collision_check(headx + distance * self.direction[0], heady + distance * self.direction[1]):
+                collision = True
+            else:
+                distance += 1
+
+        return distance
+
+    def right_check(self, field):
+            collision = False
+            headx = self.segments[0].x
+            heady = self.segments[0].y
+            distance = 1
+            while collision == False:
+                if self.wall_check(headx + distance * (self.direction[0] - self.direction[1]), heady + distance * (self.direction[1] + self.direction[0]), field) or self.snake_collision_check(headx + distance * (self.direction[0] - self.direction[1]), heady + distance * (self.direction[1] + self.direction[0])):
+                    collision = True
+                else:
+                    distance += 1
+    
+            return distance
+
+    def left_check(self, field):
+            collision = False
+            headx = self.segments[0].x
+            heady = self.segments[0].y
+            distance = 1
+            while collision == False:
+                if self.wall_check(headx + distance * (self.direction[0] + self.direction[1]), heady + distance * (self.direction[1] - self.direction[0]), field) or self.snake_collision_check(headx + distance * (self.direction[0] + self.direction[1]), heady + distance * (self.direction[1] - self.direction[0])):
+                    collision = True
+                else:
+                    distance += 1
+    
+            return distance
     
     def draw_snake(self):
         for i in range(self.Length):
             self.segments[i].draw_segment(self.cellSize-1)
-
 
 
 
