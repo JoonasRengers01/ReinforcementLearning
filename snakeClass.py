@@ -64,44 +64,43 @@ class snake():
         collision = False
         headx = self.segments[0].x
         heady = self.segments[0].y
-        distance = 1
-        while collision == False:
-            if self.wall_check(headx + distance * self.direction[0], heady + distance * self.direction[1], field) or self.snake_collision_check(headx + distance * self.direction[0], heady + distance * self.direction[1]):
-                collision = True
-            else:
-                distance += 1
+        
+        
+        if self.wall_check(headx + 1 * self.direction[0], heady + 1 * self.direction[1], field) or self.snake_collision_check(headx + 1 * self.direction[0], heady + 1 * self.direction[1]):
+            collision = True
+        else:
+            collision = False
 
-        return distance
+        return collision
 
     def right_check(self, field):
             collision = False
             headx = self.segments[0].x
             heady = self.segments[0].y
-            distance = 1
-            while collision == False:
-                if self.wall_check(headx + distance * (self.direction[0] - self.direction[1]), heady + distance * (self.direction[1] + self.direction[0]), field) or self.snake_collision_check(headx + distance * (self.direction[0] - self.direction[1]), heady + distance * (self.direction[1] + self.direction[0])):
-                    collision = True
-                else:
-                    distance += 1
-    
-            return distance
+           
+            if self.wall_check(headx + 1 * (self.direction[0] - self.direction[1]), heady + 1 * (self.direction[1] + self.direction[0]), field) or self.snake_collision_check(headx + 1 * (self.direction[0] - self.direction[1]), heady + 1 * (self.direction[1] + self.direction[0])):
+                collision = True
+            else:
+                collision = False
+
+            return collision
 
     def left_check(self, field):
             collision = False
             headx = self.segments[0].x
             heady = self.segments[0].y
-            distance = 1
-            while collision == False:
-                if self.wall_check(headx + distance * (self.direction[0] + self.direction[1]), heady + distance * (self.direction[1] - self.direction[0]), field) or self.snake_collision_check(headx + distance * (self.direction[0] + self.direction[1]), heady + distance * (self.direction[1] - self.direction[0])):
-                    collision = True
-                else:
-                    distance += 1
-    
-            return distance
+           
+           
+            if self.wall_check(headx + 1 * (self.direction[0] + self.direction[1]), heady + 1 * (self.direction[1] - self.direction[0]), field) or self.snake_collision_check(headx + 1 * (self.direction[0] + self.direction[1]), heady + 1 * (self.direction[1] - self.direction[0])):
+                collision = True
+            else:
+                collision = False
+
+            return collision
     
     def draw_snake(self):
         for i in range(self.Length):
-            self.segments[i].draw_segment(self.cellSize-1)
+            self.segments[i].draw_segment(self.cellSize-1, i)
 
 
 
@@ -115,8 +114,11 @@ class snakeSegment():
         self.cellSize = cellSize
         self.surface = surface
 
-    def draw_segment(self,SegmentSize):
+    def draw_segment(self,SegmentSize, pos):
         segmentSquare = pygame.Rect(self.x * self.cellSize + self.xoffset,self.y * self.cellSize + self.yoffset,SegmentSize,SegmentSize)
-        pygame.draw.rect(self.surface, "grey", segmentSquare)
+        if pos == 0:
+            pygame.draw.rect(self.surface, (30,30,30), segmentSquare)
+        else:
+            pygame.draw.rect(self.surface, (100,100,100), segmentSquare)
 
 
