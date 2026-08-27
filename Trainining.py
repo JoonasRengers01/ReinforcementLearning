@@ -1,19 +1,25 @@
+import os
+
 import keras
 from Main import snakeGame
 import numpy as np
 from Model import generate_snake_model
 import tensorflow as tf
+import csv 
 
-gamma = 0.95  # Past reward discount
+gamma = 0.98  # Past reward discount
 epsilon = 1.0  # Epsilon greedy parameter
-epsilon_min = 0.1  
+epsilon_min = 1e-6  
 epsilon_max = epsilon  
 epsilon_diff = (epsilon_max - epsilon_min)  # Difference between max and min, scaling factor for epsilon as training goes
-sample_size = 512
+sample_size = 4096
 max_steps_per_episode = 10000
 max_episodes = 10000
 
-optimizer = keras.optimizers.Adam(learning_rate=0.001)
+lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
+    boundaries=[2000,4000],
+    values=[0.0002, 0.0001, 0.00005])
+optimizer = keras.optimizers.Adam(learning_rate=0.0002)
 
 action_log = []
 state_log = []
@@ -32,23 +38,30 @@ num_actions = 3
 #Number of frames of gauranteed random actions
 epsilon_random_frames = 10000.0
 #Number of frames for exploration
-epsilon_greedy = 100000.0
+epsilon_greedy = 200000.0
 #maximum length of log
 max_history = 2000000
 
 #Number of actions between training
-actions_before_update = 4
+actions_before_update = 64
 
 #Number of actions before updating target network
 update_target_network = 10000
 
-lossfunction = keras.losses.Huber()
+lossfunction = keras.losses.KLDivergence()
 model = generate_snake_model()
 model_target = generate_snake_model()
+save_name = os.path.join("RewardLogs", "reward_log.csv")
+if os.path.exists(save_name):
+    save_name = os.path.join("RewardLogs", f"reward_log_{len(os.listdir('RewardLogs'))}.csv")
+np.random.seed(42)
+randomlist = []
+for i in range(50):
+    randomlist.append((np.random.randint(2,17),np.random.randint(2,17)))
 
 while True:
     #Initialize the game and get the initial state
-    game = snakeGame()
+    game = snakeGame(randomlist)
     state = game.observe()
     state = np.array(state)
 
@@ -58,7 +71,7 @@ while True:
         frame_count += 1
 
         if frame_count <= epsilon_random_frames or epsilon >= np.random.rand(1)[0]:
-            np.random.seed(np.random.randint(0,100000))
+            
             #Take a random action
             action = np.random.choice(num_actions)
             # print(f"Framecount: {frame_count}, Random action taken: {action}")
@@ -103,7 +116,7 @@ while True:
             future_state_sample = np.array([future_state_log[i] for i in indices])
             action_sample = np.array([action_log[i] for i in indices])
             reward_sample = np.array([reward_log[i] for i in indices])
-            running_sample = np.array([running_log[i] for i in indices])
+            running_sample = keras.ops.convert_to_tensor([float(running_log[i]) for i in indices])
 
             #Calculate the discounted rewards
             future_rewards = model_target.predict(future_state_sample)
@@ -120,7 +133,7 @@ while True:
 
                 q_action = keras.ops.sum(keras.ops.multiply(q_values, masks), axis=1)
                 loss = lossfunction(updated_q_values, q_action)
-
+                
                 grads = tape.gradient(loss, model.trainable_variables)
                 optimizer.apply_gradients(zip(grads, model.trainable_variables))
 
@@ -141,14 +154,21 @@ while True:
             break
 
     episode_reward_log.append(episode_reward)
+    with open(save_name, "a", newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([episode_reward, episode_count, frame_count, game.snakeHead.Length])
     frame_count_log.append(frame_count)
     if len(episode_reward_log) > 50:
         del episode_reward_log[:1]
     running_reward = np.mean(episode_reward_log)
-
+    
     episode_count += 1
 
     if episode_count >= max_episodes:
+        print("Maximum number of episodes reached, ending training")
+        break
+    if game.snakeHead.Length > 50:
+        print("Maximum snake length reached, ending training")
         break
     length_log.append(game.snakeHead.Length)
     if len(length_log) > 50:

@@ -4,7 +4,7 @@ import pygame
 from snakeClass import snake
 from fieldClass import playing_Field
 class snakeGame():
-    def __init__(self):
+    def __init__(self,locations):
         
         pygame.init()
         self.vertical_Cells = 20
@@ -21,12 +21,14 @@ class snakeGame():
         self.appleY = None
         self.max_distance =  0
         self.old_flood_fill = 10000
-        random.seed(0)
+        self.locations = locations
+    
+        # random.seed(0)
 
     def observe(self):
         while not self.isApple:
-                    self.appleX = random.randrange(2,self.horizontal_Cells-3)
-                    self.appleY = random.randrange(2,self.vertical_Cells-3)
+                    self.appleX = self.locations[self.snakeHead.Length-3][0]
+                    self.appleY = self.locations[self.snakeHead.Length-3][1]
                     if self.play_area.cells[self.appleY][self.appleX].hasWall == 0:
                         self.play_area.cells[self.appleY][self.appleX].add_apple()
                         # print(f"Apple placed at: {self.appleX}, {self.appleY}")
@@ -92,16 +94,16 @@ class snakeGame():
         reward = 0
         if self.isApple:
             if self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue < self.old_flood_fill:
-                reward += 50 * self.max_distance/self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue
+                reward += 50 - min(6,self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue)
             elif self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue > self.old_flood_fill:
-                reward += -150 * self.max_distance/self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue
+                reward += -50 - min(6,self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue)
             self.old_flood_fill = self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue
         else:
-            reward += 10000
+            reward += 400
             
         
         if not self.running:
-            reward += -50
+            reward += -200
 
         self.screen.fill("black")
         self.play_area.draw_field()
