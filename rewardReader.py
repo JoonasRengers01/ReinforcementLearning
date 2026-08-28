@@ -23,7 +23,7 @@ for list in data:
 
 for i in range(len(rewards)):
     print(f"max snake length for run {i+1}: {max(length[i])}, max reward: {max(rewards[i])}, total frames: {framecount[i][-1]}")
-    plt.scatter(episodecount[i], rewards[i], label=f"Run {i+1}")
+    plt.scatter(framecount[i], rewards[i], label=f"Run {i+1}")
     plt.xlabel('Episode')
     plt.ylabel('Reward')
     plt.title('Training Rewards')

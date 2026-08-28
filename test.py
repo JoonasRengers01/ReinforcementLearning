@@ -1,8 +1,14 @@
 from Main import snakeGame
 import pygame
-game = snakeGame()
+import numpy as np
+
 time_since_move = 0
 action = 1
+np.random.seed(42)
+randomlist = []
+for i in range(50):
+    randomlist.append((np.random.randint(2,17),np.random.randint(2,17)))
+game = snakeGame(randomlist)
 while game.running:
     time_since_move += game.clock.tick()
 
