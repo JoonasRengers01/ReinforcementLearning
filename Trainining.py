@@ -17,7 +17,7 @@ max_steps_per_episode = 10000
 max_episodes = 10000
 
 lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
-    boundaries=[2000,4000],
+    boundaries=[250000,500000],
     values=[0.0002, 0.0001, 0.00005])
 optimizer = keras.optimizers.Adam(learning_rate=0.0002)
 
@@ -48,7 +48,7 @@ actions_before_update = 64
 #Number of actions before updating target network
 update_target_network = 10000
 
-lossfunction = keras.losses.KLDivergence()
+lossfunction = keras.losses.Huber()
 model = generate_snake_model()
 model_target = generate_snake_model()
 save_name = os.path.join("RewardLogs", "reward_log.csv")
@@ -150,7 +150,7 @@ while True:
             del action_log[:1]
             del future_state_log[:1]
             del running_log[:1]
-        if not game.running:
+        if not game.running or game.snakeHead.Length > 50:
             break
 
     episode_reward_log.append(episode_reward)
@@ -175,3 +175,4 @@ while True:
         del length_log[:1]
     print(f"Episode: {episode_count}, average snake Length: {np.mean(length_log)}, snake Length: {game.snakeHead.Length}, running reward: {running_reward},  episode reward: {episode_reward}, epsilon: {epsilon}, frame count: {frame_count}")
 
+keras.models.save_model(model, "snake_model.h5")
