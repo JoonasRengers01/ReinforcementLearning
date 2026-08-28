@@ -10,7 +10,7 @@ def generate_snake_model():
     model.add(keras.Input((6,)))
     model.add(layers.Dense(8, activation= 'linear'))
     model.add(layers.Dense(16, activation= 'linear'))
-    model.add(layers.Dense(16, activation= 'linear'))
+    # model.add(layers.Dense(16, activation= 'linear'))
     model.add(layers.Dense(8, activation= 'linear'))
     model.add(layers.Dense(Num_of_actions, activation= 'linear'))
 

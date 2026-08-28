@@ -134,9 +134,7 @@ while True:
 
                 q_action = keras.ops.sum(keras.ops.multiply(q_values, masks), axis=1)
                 loss = lossfunction(updated_q_values, q_action)
-                entropy.update_state(updated_q_values, q_action)
-                entropy_value = entropy.result()
-                print(f"Entropy: {entropy_value}")
+
                 grads = tape.gradient(loss, model.trainable_variables)
                 optimizer.apply_gradients(zip(grads, model.trainable_variables))
 
