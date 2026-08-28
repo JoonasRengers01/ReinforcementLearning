@@ -7,7 +7,7 @@ from Model import generate_snake_model
 import tensorflow as tf
 import csv 
 
-gamma = 0.98  # Past reward discount
+gamma = 0.99  # Past reward discount
 epsilon = 1.0  # Epsilon greedy parameter
 epsilon_min = 1e-6  
 epsilon_max = epsilon  
@@ -131,10 +131,10 @@ while True:
 
             with tf.GradientTape() as tape:
                 q_values = model(state_sample)
-
+                estimated_q_values = model_target(state_sample)
                 q_action = keras.ops.sum(keras.ops.multiply(q_values, masks), axis=1)
                 loss = lossfunction(updated_q_values, q_action)
-
+    
                 grads = tape.gradient(loss, model.trainable_variables)
                 optimizer.apply_gradients(zip(grads, model.trainable_variables))
 
