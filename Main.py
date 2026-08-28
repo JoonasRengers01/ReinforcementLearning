@@ -96,7 +96,7 @@ class snakeGame():
             if self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue < self.old_flood_fill:
                 reward += 50 - min(25,self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue*5)
             elif self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue > self.old_flood_fill:
-                reward += -60 + min(25,self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue*5)
+                reward += -90 
             self.old_flood_fill = self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue
         else:
             reward += 4000
