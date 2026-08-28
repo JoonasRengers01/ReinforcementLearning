@@ -94,21 +94,21 @@ class snakeGame():
         reward = 0
         if self.isApple:
             if self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue < self.old_flood_fill:
-                reward += 50 - min(25,self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue*5)
+                reward += 50 - min(20,self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue)
             elif self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue > self.old_flood_fill:
-                reward += -90 
+                reward += -50 - min(20,(self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue))
             self.old_flood_fill = self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue
         else:
-            reward += 4000
+            reward = 400
             
         
         if not self.running:
-            reward += -4000
+            reward = -300
 
-        self.screen.fill("black")
-        self.play_area.draw_field()
-        self.snakeHead.draw_snake()
-        pygame.display.flip()
+        # self.screen.fill("black")
+        # self.play_area.draw_field()
+        # self.snakeHead.draw_snake()
+        # pygame.display.flip()
         return return_vector, reward, self.running
             
 

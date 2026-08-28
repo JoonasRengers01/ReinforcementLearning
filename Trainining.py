@@ -15,11 +15,11 @@ epsilon_diff = (epsilon_max - epsilon_min)  # Difference between max and min, sc
 sample_size = 4096
 max_steps_per_episode = 10000
 max_episodes = 10000
-
+max_steps = 3000000
 lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
     boundaries=[250000,500000],
     values=[0.0002, 0.0001, 0.00005])
-optimizer = keras.optimizers.Adam(learning_rate=0.0002)
+optimizer = keras.optimizers.Adam(learning_rate=lr_schedule)
 
 action_log = []
 state_log = []
@@ -164,7 +164,9 @@ while True:
     running_reward = np.mean(episode_reward_log)
     
     episode_count += 1
-
+    if frame_count >= max_steps:
+        print("Maximum number of steps reached, ending training")
+        break
     if episode_count >= max_episodes:
         print("Maximum number of episodes reached, ending training")
         break
