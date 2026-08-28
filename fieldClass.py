@@ -38,7 +38,8 @@ class playing_Field():
         
 
     def start_flood_fill(self, x, y):
-        start = dt.now()
+        self.reset_flood_fill()
+        start = dt.datetime.now()
         queue = [(x, y)]
         self.cells[y][x].floodFillValue = 0  # Starting cell has a flood fill value of 0
 
@@ -53,7 +54,7 @@ class playing_Field():
                     if neighbor_cell.hasWall == 0 and neighbor_cell.floodFillValue == np.inf:
                         neighbor_cell.floodFillValue = current_cell.floodFillValue + 1
                         queue.append((nx, ny))
-                    elif neighbor_cell.floodFillValue > current_cell.floodFillValue + 1:
+                    elif neighbor_cell.hasWall == 0 and neighbor_cell.floodFillValue > current_cell.floodFillValue + 1:
                         neighbor_cell.floodFillValue = current_cell.floodFillValue + 1
                         queue.append((nx, ny))
             queue.pop(0)
