@@ -94,16 +94,16 @@ class snakeGame():
         reward = 0
         if self.isApple:
             if self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue < self.old_flood_fill:
-                reward += 50 - min(6,self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue)
+                reward += 50 - min(25,self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue*5)
             elif self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue > self.old_flood_fill:
-                reward += -60 - min(6,self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue)
+                reward += -60 + min(25,self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue*5)
             self.old_flood_fill = self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue
         else:
-            reward += 400
+            reward += 4000
             
         
         if not self.running:
-            reward += -200
+            reward += -4000
 
         self.screen.fill("black")
         self.play_area.draw_field()
