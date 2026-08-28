@@ -9,6 +9,7 @@ randomlist = []
 for i in range(50):
     randomlist.append((np.random.randint(2,17),np.random.randint(2,17)))
 game = snakeGame(randomlist)
+game.observe()
 while game.running:
     time_since_move += game.clock.tick()
 

@@ -17,7 +17,7 @@ max_steps_per_episode = 10000
 max_episodes = 10000
 max_steps = 3000000
 lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
-    boundaries=[250000,500000],
+    boundaries=[400000/64,800000/64],
     values=[0.0002, 0.0001, 0.00005])
 optimizer = keras.optimizers.Adam(learning_rate=lr_schedule)
 
@@ -46,7 +46,7 @@ max_history = 2000000
 actions_before_update = 64
 
 #Number of actions before updating target network
-update_target_network = 10000
+update_target_network = 100000
 
 lossfunction = keras.losses.Huber()
 entropy = keras.metrics.Poisson()

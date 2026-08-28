@@ -44,7 +44,10 @@ class snakeGame():
 
         forward_apple_Distance = (self.appleX - self.snakeHead.segments[0].x) * self.snakeHead.direction[0] + (self.appleY - self.snakeHead.segments[0].y) * self.snakeHead.direction[1]
         sideways_apple_Distance = (self.appleY - self.snakeHead.segments[0].y) * self.snakeHead.direction[0] - (self.appleX - self.snakeHead.segments[0].x) * self.snakeHead.direction[1]
-
+        self.screen.fill("black")
+        self.play_area.draw_field()
+        self.snakeHead.draw_snake()
+        pygame.display.flip()
         return [float(self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue), float(forward_apple_Distance), float(sideways_apple_Distance),float(self.snakeHead.forward_check(self.play_area)), float(self.snakeHead.right_check(self.play_area)), float(self.snakeHead.left_check(self.play_area))]
 
     def step(self,action):
@@ -105,10 +108,10 @@ class snakeGame():
         if not self.running:
             reward = -300
 
-        # self.screen.fill("black")
-        # self.play_area.draw_field()
-        # self.snakeHead.draw_snake()
-        # pygame.display.flip()
+        self.screen.fill("black")
+        self.play_area.draw_field()
+        self.snakeHead.draw_snake()
+        pygame.display.flip()
         return return_vector, reward, self.running
             
 

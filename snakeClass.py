@@ -12,9 +12,6 @@ class snake():
         self.lastmove = (0,0)
         self.cellSize = cellSize
         self.surface = surface
-        self.create_snake()
-        
-    def create_snake(self):
         segments = []
         for i in range(self.Length):
             segments.append(snakeSegment(self.x,self.y,self.xoffset,self.yoffset,self.cellSize,self.surface))
