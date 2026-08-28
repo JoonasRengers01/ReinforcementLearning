@@ -31,10 +31,10 @@ class playing_Field():
             row[0].add_wall()
             row[-1].add_wall()
 
-        self.cells[10][14].add_wall()
-        self.cells[10][11].add_wall()
-        self.cells[10][12].add_wall()
-        self.cells[10][13].add_wall()
+        # self.cells[10][14].add_wall()
+        # self.cells[10][11].add_wall()
+        # self.cells[10][12].add_wall()
+        # self.cells[10][13].add_wall()
         
 
     def start_flood_fill(self, x, y):
@@ -60,7 +60,7 @@ class playing_Field():
             queue.pop(0)
 
         end = dt.datetime.now()
-        print(f"Flood fill completed in: {str(dt.timedelta(seconds=(end - start).total_seconds()))} ")
+        # print(f"Flood fill completed in: {str(dt.timedelta(seconds=(end - start).total_seconds()))} ")
             
                     
             
