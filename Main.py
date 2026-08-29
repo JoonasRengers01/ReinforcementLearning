@@ -44,11 +44,12 @@ class snakeGame():
 
         forward_apple_Distance = (self.appleX - self.snakeHead.segments[0].x) * self.snakeHead.direction[0] + (self.appleY - self.snakeHead.segments[0].y) * self.snakeHead.direction[1]
         sideways_apple_Distance = (self.appleY - self.snakeHead.segments[0].y) * self.snakeHead.direction[0] - (self.appleX - self.snakeHead.segments[0].x) * self.snakeHead.direction[1]
+        floodfills = self.snakeHead.floodfillCheck(self.play_area)
         # self.screen.fill("black")
         # self.play_area.draw_field()
         # self.snakeHead.draw_snake()
         # pygame.display.flip()
-        return [float(self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue), float(forward_apple_Distance), float(sideways_apple_Distance),float(self.snakeHead.forward_check(self.play_area)), float(self.snakeHead.right_check(self.play_area)), float(self.snakeHead.left_check(self.play_area))]
+        return [float(floodfills[0]), float(floodfills[1]), float(floodfills[2]), float(forward_apple_Distance), float(sideways_apple_Distance), float(self.snakeHead.forward_check(self.play_area)), float(self.snakeHead.right_check(self.play_area)), float(self.snakeHead.left_check(self.play_area))]
 
     def step(self,action):
 
@@ -87,13 +88,14 @@ class snakeGame():
             self.running,self.isApple = self.snakeHead.update_position(self.play_area)
             self.snakeHead.x += self.snakeHead.direction[0] * self.cell_size
             self.snakeHead.y += self.snakeHead.direction[1] * self.cell_size
-
+        
         forward_apple_Distance = (self.appleX - self.snakeHead.segments[0].x) * self.snakeHead.direction[0] + (self.appleY - self.snakeHead.segments[0].y) * self.snakeHead.direction[1]
         sideways_apple_Distance = (self.appleY - self.snakeHead.segments[0].y) * self.snakeHead.direction[0] - (self.appleX - self.snakeHead.segments[0].x) * self.snakeHead.direction[1]
+        floodfills = self.snakeHead.floodfillCheck(self.play_area)
         if self.running:
-            return_vector = [float(self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue), float(forward_apple_Distance), float(sideways_apple_Distance),float(self.snakeHead.forward_check(self.play_area)), float(self.snakeHead.right_check(self.play_area)), float(self.snakeHead.left_check(self.play_area))]
+            return_vector = [float(floodfills[0]), float(floodfills[1]), float(floodfills[2]), float(forward_apple_Distance), float(sideways_apple_Distance), float(self.snakeHead.forward_check(self.play_area)), float(self.snakeHead.right_check(self.play_area)), float(self.snakeHead.left_check(self.play_area))]
         else:
-            return_vector = list(np.zeros(6))
+            return_vector = list(np.zeros(8))
         reward = 0
         if self.isApple:
             if self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue < self.old_flood_fill:
@@ -108,10 +110,10 @@ class snakeGame():
         if not self.running:
             reward = -300
 
-        # self.screen.fill("black")
-        # self.play_area.draw_field()
-        # self.snakeHead.draw_snake()
-        # pygame.display.flip()
+        self.screen.fill("black")
+        self.play_area.draw_field()
+        self.snakeHead.draw_snake()
+        pygame.display.flip()
         return return_vector, reward, self.running
             
 

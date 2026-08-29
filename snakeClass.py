@@ -40,7 +40,16 @@ class snake():
             return False, True
         return True, True
 
-
+    def floodfillCheck(self,field):
+        floodfill_values = []
+        forwardcell = self.segments[0].x + 1*self.direction[0], self.segments[0].y + 1*self.direction[1]
+        leftcell = self.segments[0].x + 1*(self.direction[0] + self.direction[1]), self.segments[0].y + 1*(self.direction[1] - self.direction[0])
+        rightcell = self.segments[0].x + 1*(self.direction[0] - self.direction[1]), self.segments[0].y + 1*(self.direction[1] + self.direction[0])
+        floodfill_values.append(field.cells[forwardcell[1]][forwardcell[0]].floodFillValue)
+        floodfill_values.append(field.cells[leftcell[1]][leftcell[0]].floodFillValue)
+        floodfill_values.append(field.cells[rightcell[1]][rightcell[0]].floodFillValue)
+        return floodfill_values
+    
     def wall_check(self,x,y,field):        
         if field.cells[y][x].hasWall == 1:
             return True

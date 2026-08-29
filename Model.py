@@ -7,7 +7,7 @@ def generate_snake_model():
 
     model = keras.Sequential()
 
-    model.add(keras.Input((6,)))
+    model.add(keras.Input((8,)))
     model.add(layers.Dense(8, activation= 'linear'))
     model.add(layers.Dense(16, activation= 'linear'))
     # model.add(layers.Dense(16, activation= 'linear'))

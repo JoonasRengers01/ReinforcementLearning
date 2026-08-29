@@ -32,7 +32,7 @@ for i in range(len(rewards)):
     plt.close()
 
     running_average_length = []
-    window_size = 10
+    window_size = 50
     for j in range(len(length[i])):
         if j < window_size:
             running_average_length.append(sum(length[i][:j+1])/(j+1))
