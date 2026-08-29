@@ -95,7 +95,7 @@ class snakeGame():
         if self.running:
             return_vector = [float(floodfill_values[0]), float(floodfill_values[1]), float(floodfill_values[2]),float(self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue), float(forward_apple_Distance), float(sideways_apple_Distance), float(self.snakeHead.forward_check(self.play_area)), float(self.snakeHead.right_check(self.play_area)), float(self.snakeHead.left_check(self.play_area))]
         else:
-            return_vector = [300, 300, 300, 300, 300, 300, 1, 1,1]
+            return_vector = [300, 300, 300, 300, 300, 300, -1, -1, -1]
         reward = 0
         if self.isApple:
             if self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue < self.old_flood_fill:
