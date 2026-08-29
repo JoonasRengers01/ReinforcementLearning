@@ -17,7 +17,7 @@ max_steps_per_episode = 10000
 max_episodes = 10000
 max_steps = 3000000
 lr_schedule = keras.optimizers.schedules.PiecewiseConstantDecay(
-    boundaries=[400000/64,800000/64],
+    boundaries=[4000000/64,8000000/64],
     values=[0.0002, 0.0001, 0.00005])
 optimizer = keras.optimizers.Adam(learning_rate=lr_schedule)
 
@@ -36,9 +36,9 @@ frame_count = 0
 num_actions = 3
 
 #Number of frames of gauranteed random actions
-epsilon_random_frames = 10000.0
+epsilon_random_frames = 20000.0
 #Number of frames for exploration
-epsilon_greedy = 200000.0
+epsilon_greedy = 2000000.0
 #maximum length of log
 max_history = 2000000
 
