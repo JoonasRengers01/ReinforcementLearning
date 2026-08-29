@@ -108,8 +108,8 @@ class cell():
 
         pygame.draw.rect(self.surface, colour, cellSquare)
 
-        if pygame.font:
-                font = pygame.font.Font(None, 11)
-                text = font.render(str(self.floodFillValue), True, (255, 255, 255))
-                text_rect = text.get_rect(center=cellSquare.center)
-                self.surface.blit(text, text_rect)
+        # if pygame.font:
+        #         font = pygame.font.Font(None, 11)
+        #         text = font.render(str(self.floodFillValue), True, (255, 255, 255))
+        #         text_rect = text.get_rect(center=cellSquare.center)
+        #         self.surface.blit(text, text_rect)
