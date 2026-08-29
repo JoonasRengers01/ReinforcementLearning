@@ -91,8 +91,9 @@ class snakeGame():
         
         forward_apple_Distance = (self.appleX - self.snakeHead.segments[0].x) * self.snakeHead.direction[0] + (self.appleY - self.snakeHead.segments[0].y) * self.snakeHead.direction[1]
         sideways_apple_Distance = (self.appleY - self.snakeHead.segments[0].y) * self.snakeHead.direction[0] - (self.appleX - self.snakeHead.segments[0].x) * self.snakeHead.direction[1]
-        floodfill_values = self.snakeHead.floodfillCheck(self.play_area)
+        
         if self.running:
+            floodfill_values = self.snakeHead.floodfillCheck(self.play_area)
             return_vector = [float(floodfill_values[0]), float(floodfill_values[1]), float(floodfill_values[2]),float(self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue), float(forward_apple_Distance), float(sideways_apple_Distance), float(self.snakeHead.forward_check(self.play_area)), float(self.snakeHead.right_check(self.play_area)), float(self.snakeHead.left_check(self.play_area))]
         else:
             return_vector = [300, 300, 300, 300, 300, 300, -1, -1, -1]
