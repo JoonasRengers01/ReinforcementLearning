@@ -31,13 +31,13 @@ class playing_Field():
             row[0].add_wall()
             row[-1].add_wall()
 
-        self.cells[10][14].add_wall()
+        # self.cells[10][14].add_wall()
         
         # self.cells[10][12].add_wall()
-        self.cells[10][13].add_wall()
-        self.cells[10][15].add_wall()
-        self.cells[11][15].add_wall()
-        self.cells[9][12].add_wall()
+        # self.cells[10][13].add_wall()
+        # self.cells[10][15].add_wall()
+        # self.cells[11][15].add_wall()
+        # self.cells[9][12].add_wall()
 
     def start_flood_fill(self, x, y):
         self.reset_flood_fill()

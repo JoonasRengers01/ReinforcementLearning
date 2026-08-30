@@ -2,7 +2,7 @@ import keras
 import numpy as np
 import tensorflow as tf
 from Main import snakeGame
-
+epsilon = 1e-6
 model = keras.models.load_model('ModelArchive/'+'snake_model_no_walls.h5')
 seeds = [25,42,100,146]
 results = []
@@ -17,10 +17,13 @@ for j in seeds:
         state = game.observe()
         state = np.array(state)
         while game.running:
-            state_tensor = keras.ops.convert_to_tensor(state, dtype=tf.float32)
-            state_tensor = keras.ops.expand_dims(state,0)
-            action_probability = model(state_tensor, training = False)
-            action = tf.argmax(action_probability[0]).numpy()
+            if epsilon >= np.random.rand(1)[0]:
+                action = np.random.choice(3)
+            else:
+                state_tensor = keras.ops.convert_to_tensor(state, dtype=tf.float32)
+                state_tensor = keras.ops.expand_dims(state,0)
+                action_probability = model(state_tensor, training = False)
+                action = tf.argmax(action_probability[0]).numpy()
             future_state,reward, running = game.step(action)
             future_state = np.array(future_state)
             state = future_state
