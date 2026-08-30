@@ -49,13 +49,13 @@ class snakeGame():
         self.play_area.draw_field()
         self.snakeHead.draw_snake()
         pygame.display.flip()
-        return [float(floodfill_values[0]), float(floodfill_values[1]), float(floodfill_values[2]),float(self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue), float(forward_apple_Distance), float(sideways_apple_Distance), float(self.snakeHead.forward_check(self.play_area)), float(self.snakeHead.right_check(self.play_area)), float(self.snakeHead.left_check(self.play_area))]
+        return [float(self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue), float(forward_apple_Distance), float(sideways_apple_Distance), float(self.snakeHead.forward_check(self.play_area)), float(self.snakeHead.right_check(self.play_area)), float(self.snakeHead.left_check(self.play_area))]
 
     def step(self,action):
 
         while not self.isApple:
-            self.appleX = random.randrange(2,self.horizontal_Cells-3)
-            self.appleY = random.randrange(2,self.vertical_Cells-3)
+            self.appleX = self.locations[self.snakeHead.Length-3][0]
+            self.appleY = self.locations[self.snakeHead.Length-3][1]
             if self.play_area.cells[self.appleY][self.appleX].hasWall == 0:
                 self.play_area.cells[self.appleY][self.appleX].add_apple()
                 # print(f"Apple placed at: {self.appleX}, {self.appleY}")
@@ -68,6 +68,8 @@ class snakeGame():
                 self.max_distance = max(floodfill_values)
                 self.old_flood_fill = self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue
                 self.isApple = True
+            else:
+                self.locations[self.snakeHead.Length-3] = (np.random.randint(2,17),np.random.randint(2,17))
                 
                 
                 
@@ -94,9 +96,9 @@ class snakeGame():
         
         if self.running:
             floodfill_values = self.snakeHead.floodfillCheck(self.play_area)
-            return_vector = [float(floodfill_values[0]), float(floodfill_values[1]), float(floodfill_values[2]),float(self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue), float(forward_apple_Distance), float(sideways_apple_Distance), float(self.snakeHead.forward_check(self.play_area)), float(self.snakeHead.right_check(self.play_area)), float(self.snakeHead.left_check(self.play_area))]
+            return_vector = [float(self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue), float(forward_apple_Distance), float(sideways_apple_Distance), float(self.snakeHead.forward_check(self.play_area)), float(self.snakeHead.right_check(self.play_area)), float(self.snakeHead.left_check(self.play_area))]
         else:
-            return_vector = [300, 300, 300, 300, 300, 300, -1, -1, -1]
+            return_vector = [ 300, 300, 300, -1, -1, -1]
         reward = 0
         if self.isApple:
             if self.play_area.cells[self.snakeHead.segments[0].y][self.snakeHead.segments[0].x].floodFillValue < self.old_flood_fill:
